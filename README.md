@@ -6,3 +6,5 @@
    - https://github.com/golang/go/wiki/CodeReviewComments#receiver-names
 - Linters
   - https://pre-commit.com/ 
+     - brew install pre-commit 
+     - pre-commit install
