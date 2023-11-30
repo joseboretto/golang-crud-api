@@ -1,10 +1,10 @@
 package book
 
 import (
-	"encoding/json"
 	servicebook "github.com/joseboretto/golang-crud-api/internal/application/service/book"
+	"github.com/joseboretto/golang-crud-api/internal/infrastructure/controller/book/dto"
+	"github.com/joseboretto/golang-crud-api/internal/infrastructure/controller/utils"
 	"io"
-	"log"
 	"net/http"
 )
 
@@ -25,27 +25,30 @@ func (controller *Controller) GetHelloWorld(w http.ResponseWriter, req *http.Req
 	io.WriteString(w, "Hello, world 2!\n")
 }
 
-func (controller *Controller) CreateBook(w http.ResponseWriter, req *http.Request) {
+func (c *Controller) CreateBook(w http.ResponseWriter, req *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	if req.Method == "POST" {
-		w.WriteHeader(http.StatusOK)
-		var createBookRequest CreateBookRequest
-		err := json.NewDecoder(req.Body).Decode(&createBookRequest)
+		createBookRequest := new(dto.CreateBookRequest)
+		err := utils.Decode(req, &createBookRequest)
 		if err != nil {
-			log.Fatalln("There was an error decoding the req body into the struct")
+			w.WriteHeader(http.StatusBadRequest)
+			return
 		}
+
 		// mapper
-		bookDomain := MapToBookModel(createBookRequest)
+		bookDomain := dto.MapToBookModel(createBookRequest)
 		// service
-		createBook, err := controller.createBookServiceInterface.CreateBook(bookDomain)
+		createBook, err := c.createBookServiceInterface.CreateBook(bookDomain)
 		if err != nil {
-			log.Fatalln("There was an error decoding the req body into the struct")
+			w.WriteHeader(http.StatusBadRequest)
+			return
 		}
 		// response
-		createBookResponse := MapToCreateBookResponse(createBook)
-		err = json.NewEncoder(w).Encode(&createBookResponse)
-		if err != nil {
-			log.Fatalln("There was an error encoding the initialized struct")
+		createBookResponse := dto.MapToCreateBookResponse(createBook)
+
+		if err = utils.Response(w, createBookResponse, http.StatusOK); err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
 		}
 	} else {
 		w.WriteHeader(http.StatusBadRequest)
@@ -54,24 +57,25 @@ func (controller *Controller) CreateBook(w http.ResponseWriter, req *http.Reques
 
 }
 
-func (controller *Controller) GetBooks(w http.ResponseWriter, req *http.Request) {
+func (c *Controller) GetBooks(w http.ResponseWriter, req *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	if req.Method == "GET" {
-		w.WriteHeader(http.StatusOK)
 		// service
-		books, err := controller.getAllBooksServiceInterface.GetAllBooks()
+		books, err := c.getAllBooksServiceInterface.GetAllBooks()
 		if err != nil {
-			log.Fatalln("There was an error decoding the req body into the struct")
+			w.WriteHeader(http.StatusBadRequest)
+			return
 		}
 		// response
-		booksResponse := make([]*GetAllBookResponse, 0, len(books))
+		booksResponse := make([]*dto.GetAllBookResponse, 0, len(books))
 		for _, value := range books {
-			bookResponse := MapToGetAllBookResponse(value)
+			bookResponse := dto.MapToGetAllBookResponse(value)
 			booksResponse = append(booksResponse, bookResponse)
 		}
-		err = json.NewEncoder(w).Encode(&booksResponse)
-		if err != nil {
-			log.Fatalln("There was an error encoding the initialized struct")
+
+		if err = utils.Response(w, booksResponse, http.StatusOK); err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
 		}
 	} else {
 		w.WriteHeader(http.StatusBadRequest)

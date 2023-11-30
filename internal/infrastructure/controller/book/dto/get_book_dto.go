@@ -1,4 +1,4 @@
-package book
+package dto
 
 type GetAllBookResponse struct {
 	Title      string `json:"title"`

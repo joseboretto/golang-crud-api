@@ -2,9 +2,8 @@ package main
 
 import (
 	servicebook "github.com/joseboretto/golang-crud-api/internal/application/service/book"
-	infrastructurehttp "github.com/joseboretto/golang-crud-api/internal/infrastructure/http"
-	"github.com/joseboretto/golang-crud-api/internal/infrastructure/http/controller"
-	controllerbook "github.com/joseboretto/golang-crud-api/internal/infrastructure/http/controller/book"
+	controller "github.com/joseboretto/golang-crud-api/internal/infrastructure/controller"
+	controllerbook "github.com/joseboretto/golang-crud-api/internal/infrastructure/controller/book"
 
 	persistancebook "github.com/joseboretto/golang-crud-api/internal/infrastructure/persistance/book"
 	"log"
@@ -24,7 +23,7 @@ func main() {
 	bookController := controllerbook.NewBookController(createBookService, getAllBooksService)
 	helloController := controller.NewHelloController()
 	// routes
-	infrastructurehttp.SetupRoutes(bookController, helloController)
+	controller.SetupRoutes(bookController, helloController)
 
 	log.Println("Listing for requests at http://localhost:8000")
 	log.Fatal(http.ListenAndServe(":8000", nil))

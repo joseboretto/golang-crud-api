@@ -1,8 +1,8 @@
-package book
+package dto
 
 import "github.com/joseboretto/golang-crud-api/internal/domain/model"
 
-func MapToBookModel(c CreateBookRequest) *model.Book {
+func MapToBookModel(c *CreateBookRequest) *model.Book {
 	return &model.Book{
 		Title:      c.Title,
 		TotalPages: c.TotalPages,

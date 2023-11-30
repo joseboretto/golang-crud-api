@@ -1,4 +1,4 @@
-package book
+package dto
 
 import "github.com/joseboretto/golang-crud-api/internal/domain/model"
 
