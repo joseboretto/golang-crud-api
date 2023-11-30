@@ -8,24 +8,24 @@ import (
 	"net/http"
 )
 
-type BookController struct {
+type Controller struct {
 	createBookServiceInterface  servicebook.CreateBookServiceInterface
 	getAllBooksServiceInterface servicebook.GetAllBooksServiceInterface
 }
 
 func NewBookController(createBookServiceInterface servicebook.CreateBookServiceInterface,
-	getAllBooksServiceInterface servicebook.GetAllBooksServiceInterface) *BookController {
-	return &BookController{
+	getAllBooksServiceInterface servicebook.GetAllBooksServiceInterface) *Controller {
+	return &Controller{
 		createBookServiceInterface:  createBookServiceInterface,
 		getAllBooksServiceInterface: getAllBooksServiceInterface,
 	}
 }
 
-func (controller *BookController) GetHelloWorld(w http.ResponseWriter, req *http.Request) {
+func (controller *Controller) GetHelloWorld(w http.ResponseWriter, req *http.Request) {
 	io.WriteString(w, "Hello, world 2!\n")
 }
 
-func (controller *BookController) CreateBook(w http.ResponseWriter, req *http.Request) {
+func (controller *Controller) CreateBook(w http.ResponseWriter, req *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	if req.Method == "POST" {
 		w.WriteHeader(http.StatusOK)
@@ -35,14 +35,15 @@ func (controller *BookController) CreateBook(w http.ResponseWriter, req *http.Re
 			log.Fatalln("There was an error decoding the req body into the struct")
 		}
 		// mapper
-		bookDomain := MapToDomain(createBookRequest)
+		bookDomain := MapToBookModel(createBookRequest)
 		// service
 		createBook, err := controller.createBookServiceInterface.CreateBook(bookDomain)
 		if err != nil {
 			log.Fatalln("There was an error decoding the req body into the struct")
 		}
 		// response
-		err = json.NewEncoder(w).Encode(&createBook)
+		createBookResponse := MapToCreateBookResponse(createBook)
+		err = json.NewEncoder(w).Encode(&createBookResponse)
 		if err != nil {
 			log.Fatalln("There was an error encoding the initialized struct")
 		}
@@ -53,7 +54,7 @@ func (controller *BookController) CreateBook(w http.ResponseWriter, req *http.Re
 
 }
 
-func (controller *BookController) GetBooks(w http.ResponseWriter, req *http.Request) {
+func (controller *Controller) GetBooks(w http.ResponseWriter, req *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	if req.Method == "GET" {
 		w.WriteHeader(http.StatusOK)
@@ -63,7 +64,12 @@ func (controller *BookController) GetBooks(w http.ResponseWriter, req *http.Requ
 			log.Fatalln("There was an error decoding the req body into the struct")
 		}
 		// response
-		err = json.NewEncoder(w).Encode(&books)
+		booksResponse := make([]*GetAllBookResponse, 0, len(books))
+		for _, value := range books {
+			bookResponse := MapToGetAllBookResponse(value)
+			booksResponse = append(booksResponse, bookResponse)
+		}
+		err = json.NewEncoder(w).Encode(&booksResponse)
 		if err != nil {
 			log.Fatalln("There was an error encoding the initialized struct")
 		}

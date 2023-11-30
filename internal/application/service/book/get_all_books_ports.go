@@ -5,9 +5,9 @@ import (
 )
 
 type GetAllBooksServiceInterface interface {
-	GetAllBooks() ([]model.Book, error)
+	GetAllBooks() ([]*model.Book, error)
 }
 
 type GetAllBooksRepositoryInterface interface {
-	SelectAllBooks() ([]model.Book, error)
+	SelectAllBooks() ([]*model.Book, error)
 }

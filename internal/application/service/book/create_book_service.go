@@ -15,6 +15,7 @@ func NewCreateBookService(repository CreateBookRepositoryInterface) *CreateBookS
 }
 
 func (s *CreateBookService) CreateBook(book *model.Book) (*model.Book, error) {
+	// TODO: Add business logic here
 	storedBook, err := s.repository.InsertBook(book)
 	if err != nil {
 		return nil, err

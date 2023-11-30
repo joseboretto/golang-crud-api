@@ -3,10 +3,10 @@ package book
 import "github.com/joseboretto/golang-crud-api/internal/domain/model"
 
 type CreateBookRepository struct {
-	database InMemoryBookDatabase
+	database InMemoryKeyValueStorage
 }
 
-func NewCreateBookRepository(database InMemoryBookDatabase) *CreateBookRepository {
+func NewCreateBookRepository(database InMemoryKeyValueStorage) *CreateBookRepository {
 	return &CreateBookRepository{
 		database: database,
 	}

@@ -14,7 +14,7 @@ func NewGetAllBooksService(repository GetAllBooksRepositoryInterface) *GetAllBoo
 	}
 }
 
-func (s *GetAllBooksService) GetAllBooks() ([]model.Book, error) {
+func (s *GetAllBooksService) GetAllBooks() ([]*model.Book, error) {
 	books, err := s.repository.SelectAllBooks()
 	if err != nil {
 		return nil, err
