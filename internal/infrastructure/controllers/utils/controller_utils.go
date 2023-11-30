@@ -1,11 +1,8 @@
 package utils
 
 import (
-	"net/http"
-)
-
-import (
 	"encoding/json"
+	"net/http"
 )
 
 // Decode reads the body of an HTTP request looking for a JSON document. The

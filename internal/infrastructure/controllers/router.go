@@ -1,8 +1,9 @@
 package controllers
 
 import (
-	"github.com/joseboretto/golang-crud-api/internal/infrastructure/controllers/books"
 	"net/http"
+
+	"github.com/joseboretto/golang-crud-api/internal/infrastructure/controllers/books"
 )
 
 func SetupRoutes(bookController *books.Controller, helloController *HelloController) {

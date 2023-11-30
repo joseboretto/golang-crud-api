@@ -6,9 +6,10 @@ import (
 	controllerbook "github.com/joseboretto/golang-crud-api/internal/infrastructure/controllers/books"
 	"github.com/joseboretto/golang-crud-api/internal/infrastructure/persistance"
 
-	persistancebook "github.com/joseboretto/golang-crud-api/internal/infrastructure/persistance/book"
 	"log"
 	"net/http"
+
+	persistancebook "github.com/joseboretto/golang-crud-api/internal/infrastructure/persistance/book"
 )
 
 func main() {
