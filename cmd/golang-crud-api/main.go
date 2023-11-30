@@ -1,9 +1,10 @@
 package main
 
 import (
-	servicebook "github.com/joseboretto/golang-crud-api/internal/application/service/book"
-	controller "github.com/joseboretto/golang-crud-api/internal/infrastructure/controller"
-	controllerbook "github.com/joseboretto/golang-crud-api/internal/infrastructure/controller/book"
+	servicebook "github.com/joseboretto/golang-crud-api/internal/application/services/books"
+	controller "github.com/joseboretto/golang-crud-api/internal/infrastructure/controllers"
+	controllerbook "github.com/joseboretto/golang-crud-api/internal/infrastructure/controllers/books"
+	"github.com/joseboretto/golang-crud-api/internal/infrastructure/persistance"
 
 	persistancebook "github.com/joseboretto/golang-crud-api/internal/infrastructure/persistance/book"
 	"log"
@@ -12,7 +13,7 @@ import (
 
 func main() {
 	// Dependency Injection
-	database := persistancebook.NewInMemoryKeyValueStorage()
+	database := persistance.NewInMemoryKeyValueStorage()
 	// repositories
 	newCreateBookRepository := persistancebook.NewCreateBookRepository(*database)
 	newGetAllBooksRepository := persistancebook.NewGetAllBooksRepository(*database)

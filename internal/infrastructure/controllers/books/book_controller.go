@@ -1,9 +1,9 @@
-package book
+package books
 
 import (
-	servicebook "github.com/joseboretto/golang-crud-api/internal/application/service/book"
-	"github.com/joseboretto/golang-crud-api/internal/infrastructure/controller/book/dto"
-	"github.com/joseboretto/golang-crud-api/internal/infrastructure/controller/utils"
+	servicebook "github.com/joseboretto/golang-crud-api/internal/application/services/books"
+	"github.com/joseboretto/golang-crud-api/internal/infrastructure/controllers/books/dto"
+	"github.com/joseboretto/golang-crud-api/internal/infrastructure/controllers/utils"
 	"io"
 	"net/http"
 )

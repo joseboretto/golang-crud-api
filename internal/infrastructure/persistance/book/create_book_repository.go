@@ -1,18 +1,21 @@
 package book
 
-import "github.com/joseboretto/golang-crud-api/internal/domain/model"
+import (
+	"github.com/joseboretto/golang-crud-api/internal/domain/models"
+	"github.com/joseboretto/golang-crud-api/internal/infrastructure/persistance"
+)
 
 type CreateBookRepository struct {
-	database InMemoryKeyValueStorage
+	database persistance.InMemoryKeyValueStorage
 }
 
-func NewCreateBookRepository(database InMemoryKeyValueStorage) *CreateBookRepository {
+func NewCreateBookRepository(database persistance.InMemoryKeyValueStorage) *CreateBookRepository {
 	return &CreateBookRepository{
 		database: database,
 	}
 }
 
-func (c *CreateBookRepository) InsertBook(book *model.Book) (*model.Book, error) {
+func (c *CreateBookRepository) InsertBook(book *models.Book) (*models.Book, error) {
 	insert, err := c.database.Insert(book)
 	if err != nil {
 		return nil, err

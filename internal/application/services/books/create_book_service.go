@@ -1,8 +1,6 @@
-package book
+package books
 
-import (
-	"github.com/joseboretto/golang-crud-api/internal/domain/model"
-)
+import "github.com/joseboretto/golang-crud-api/internal/domain/models"
 
 type CreateBookService struct {
 	repository CreateBookRepositoryInterface
@@ -14,7 +12,7 @@ func NewCreateBookService(repository CreateBookRepositoryInterface) *CreateBookS
 	}
 }
 
-func (s *CreateBookService) CreateBook(book *model.Book) (*model.Book, error) {
+func (s *CreateBookService) CreateBook(book *models.Book) (*models.Book, error) {
 	// TODO: Add business logic here
 	storedBook, err := s.repository.InsertBook(book)
 	if err != nil {

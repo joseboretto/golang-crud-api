@@ -1,8 +1,6 @@
-package book
+package books
 
-import (
-	"github.com/joseboretto/golang-crud-api/internal/domain/model"
-)
+import "github.com/joseboretto/golang-crud-api/internal/domain/models"
 
 type GetAllBooksService struct {
 	repository GetAllBooksRepositoryInterface
@@ -14,7 +12,7 @@ func NewGetAllBooksService(repository GetAllBooksRepositoryInterface) *GetAllBoo
 	}
 }
 
-func (s *GetAllBooksService) GetAllBooks() ([]*model.Book, error) {
+func (s *GetAllBooksService) GetAllBooks() ([]*models.Book, error) {
 	books, err := s.repository.SelectAllBooks()
 	if err != nil {
 		return nil, err

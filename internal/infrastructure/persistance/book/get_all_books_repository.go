@@ -1,17 +1,20 @@
 package book
 
-import "github.com/joseboretto/golang-crud-api/internal/domain/model"
+import (
+	"github.com/joseboretto/golang-crud-api/internal/domain/models"
+	"github.com/joseboretto/golang-crud-api/internal/infrastructure/persistance"
+)
 
 type GetAllBooksRepository struct {
-	database InMemoryKeyValueStorage
+	database persistance.InMemoryKeyValueStorage
 }
 
-func NewGetAllBooksRepository(database InMemoryKeyValueStorage) *GetAllBooksRepository {
+func NewGetAllBooksRepository(database persistance.InMemoryKeyValueStorage) *GetAllBooksRepository {
 	return &GetAllBooksRepository{
 		database: database,
 	}
 }
 
-func (c *GetAllBooksRepository) SelectAllBooks() ([]*model.Book, error) {
+func (c *GetAllBooksRepository) SelectAllBooks() ([]*models.Book, error) {
 	return c.database.GetAll(), nil
 }
