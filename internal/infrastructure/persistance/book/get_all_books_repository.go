@@ -15,6 +15,6 @@ func NewGetAllBooksRepository(database persistance.InMemoryKeyValueStorage) *Get
 	}
 }
 
-func (c *GetAllBooksRepository) SelectAllBooks() ([]*models.Book, error) {
+func (c *GetAllBooksRepository) SelectBookByIsbn() ([]*models.Book, error) {
 	return c.database.GetAll(), nil
 }

@@ -7,5 +7,6 @@ type CreateBookServiceInterface interface {
 }
 
 type CreateBookRepositoryInterface interface {
+	SelectBookByIsbn(isbn string) (*models.Book, error)
 	InsertBook(book *models.Book) (*models.Book, error)
 }

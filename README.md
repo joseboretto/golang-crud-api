@@ -8,3 +8,6 @@
   - https://pre-commit.com/ 
      - brew install pre-commit 
      - pre-commit install
+- Race condition
+  - https://dev.to/antsmartian/creating-a-simple-concurrent-database-in-go-2l7j 
+  - https://pavledjuric.medium.com/thread-safety-in-golang-47fa856fb8bb

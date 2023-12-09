@@ -18,14 +18,15 @@ func main() {
 	// repositories
 	newCreateBookRepository := persistancebook.NewCreateBookRepository(*database)
 	newGetAllBooksRepository := persistancebook.NewGetAllBooksRepository(*database)
+	newGetBookRepository := persistancebook.NewGetBookRepository(*database)
 	// services
 	createBookService := servicebook.NewCreateBookService(newCreateBookRepository)
 	getAllBooksService := servicebook.NewGetAllBooksService(newGetAllBooksRepository)
+	newGetBookService := servicebook.NewGetBookService(newGetBookRepository)
 	// controllers
-	bookController := controllerbook.NewBookController(createBookService, getAllBooksService)
-	helloController := controller.NewHelloController()
+	bookController := controllerbook.NewBookController(createBookService, getAllBooksService, newGetBookService)
 	// routes
-	controller.SetupRoutes(bookController, helloController)
+	controller.SetupRoutes(bookController)
 
 	log.Println("Listing for requests at http://localhost:8000")
 	log.Fatal(http.ListenAndServe(":8000", nil))

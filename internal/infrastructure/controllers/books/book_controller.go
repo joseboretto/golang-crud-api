@@ -1,8 +1,8 @@
 package books
 
 import (
-	"io"
 	"net/http"
+	"strings"
 
 	servicebook "github.com/joseboretto/golang-crud-api/internal/application/services/books"
 	"github.com/joseboretto/golang-crud-api/internal/infrastructure/controllers/books/dto"
@@ -12,18 +12,15 @@ import (
 type Controller struct {
 	createBookServiceInterface  servicebook.CreateBookServiceInterface
 	getAllBooksServiceInterface servicebook.GetAllBooksServiceInterface
+	getBookServiceInterface     servicebook.GetBookServiceInterface
 }
 
-func NewBookController(createBookServiceInterface servicebook.CreateBookServiceInterface,
-	getAllBooksServiceInterface servicebook.GetAllBooksServiceInterface) *Controller {
+func NewBookController(createBookServiceInterface servicebook.CreateBookServiceInterface, getAllBooksServiceInterface servicebook.GetAllBooksServiceInterface, getBookServiceInterface *servicebook.GetBookService) *Controller {
 	return &Controller{
 		createBookServiceInterface:  createBookServiceInterface,
 		getAllBooksServiceInterface: getAllBooksServiceInterface,
+		getBookServiceInterface:     getBookServiceInterface,
 	}
-}
-
-func (controller *Controller) GetHelloWorld(w http.ResponseWriter, req *http.Request) {
-	io.WriteString(w, "Hello, world 2!\n")
 }
 
 func (c *Controller) CreateBook(w http.ResponseWriter, req *http.Request) {
@@ -68,13 +65,43 @@ func (c *Controller) GetBooks(w http.ResponseWriter, req *http.Request) {
 			return
 		}
 		// response
-		booksResponse := make([]*dto.GetAllBookResponse, 0, len(books))
+		booksResponse := make([]*dto.GetBookResponse, 0, len(books))
 		for _, value := range books {
 			bookResponse := dto.MapToGetAllBookResponse(value)
 			booksResponse = append(booksResponse, bookResponse)
 		}
 
 		if err = utils.Response(w, booksResponse, http.StatusOK); err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+	} else {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("Bad Request"))
+	}
+
+}
+
+func (c *Controller) GetBookByIsbn(w http.ResponseWriter, req *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	if req.Method == "GET" {
+		//
+		isbn := strings.TrimPrefix(req.URL.Path, "/api/v1/getBookByIsbn/")
+		if isbn == "" {
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write([]byte("isbn required"))
+			return
+		}
+		// service
+		book, err := c.getBookServiceInterface.GetBook(isbn)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+		// response
+		bookResponse := dto.MapToGetAllBookResponse(book)
+
+		if err = utils.Response(w, bookResponse, http.StatusOK); err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}

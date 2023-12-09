@@ -22,3 +22,8 @@ func (c *CreateBookRepository) InsertBook(book *models.Book) (*models.Book, erro
 	}
 	return insert, nil
 }
+
+func (c *CreateBookRepository) SelectBookByIsbn(isbn string) (*models.Book, error) {
+	books, _ := c.database.SelectBookByIsbn(isbn)
+	return books, nil
+}
